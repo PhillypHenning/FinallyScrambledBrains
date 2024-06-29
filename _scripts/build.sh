@@ -12,3 +12,5 @@ cmake ..
 
 # Compile the project
 make
+
+cd $WORKDIR
