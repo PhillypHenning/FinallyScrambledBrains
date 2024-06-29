@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.29.6)
 
 # Set the project name and version
 project(FinallyScrambledBrains VERSION 0.1)

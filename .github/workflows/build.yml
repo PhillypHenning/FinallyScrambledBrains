@@ -7,62 +7,62 @@ on:
     branches: [ main ]
 
 jobs:
-  build-linux:
-    name: Build on Linux
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  # build-linux:
+  #   name: Build on Linux
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
 
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v2.0.2
-        with:
-          cmake-version: '3.10.x'
+  #     - name: Set up CMake
+  #       uses: jwlawson/actions-setup-cmake@v2.0.2
+  #       with:
+  #         cmake-version: '3.10.x'
 
-      - name: Set up Build Tools
-        run: sudo apt-get update && sudo apt-get install -y build-essential
+  #     - name: Set up Build Tools
+  #       run: sudo apt-get update && sudo apt-get install -y build-essential
 
-      - name: Create build directory
-        run: mkdir -p build
+  #     - name: Create build directory
+  #       run: mkdir -p build
 
-      - name: Run CMake configuration
-        run: cmake -S . -B build
+  #     - name: Run CMake configuration
+  #       run: cmake -S . -B build
 
-      - name: Build
-        run: cmake --build build --config Release
+  #     - name: Build
+  #       run: cmake --build build --config Release
 
-      - name: Upload Linux artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: linux-build
-          path: build
+  #     - name: Upload Linux artifact
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: linux-build
+  #         path: build
 
-  build-macos:
-    name: Build on macOS
-    runs-on: macos-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  # build-macos:
+    # name: Build on macOS
+    # runs-on: macos-latest
+    # steps:
+    #   - name: Checkout repository
+    #     uses: actions/checkout@v2
 
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v2.0.2
-        with:
-          cmake-version: '3.10.x'
+    #   - name: Set up CMake
+    #     uses: jwlawson/actions-setup-cmake@v2.0.2
+    #     with:
+    #       cmake-version: '3.10.x'
 
-      - name: Create build directory
-        run: mkdir -p build
+    #   - name: Create build directory
+    #     run: mkdir -p build
 
-      - name: Run CMake configuration
-        run: cmake -S . -B build
+    #   - name: Run CMake configuration
+    #     run: cmake -S . -B build
 
-      - name: Build
-        run: cmake --build build --config Release
+    #   - name: Build
+    #     run: cmake --build build --config Release
 
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: macos-build
-          path: build
+    #   - name: Upload macOS artifact
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: macos-build
+    #       path: build
 
   build-windows:
     name: Build on Windows
@@ -74,19 +74,23 @@ jobs:
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v2.0.2
         with:
-          cmake-version: '3.10.x'
+          cmake-version: '3.29.6'
+      
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x86
+          vs-version: '17.0'
 
       - name: Create build directory
-        run: mkdir build
-
-      - name: Run CMake configuration
-        run: cmake -G "Visual Studio 16 2019" -A x64 -S . -B build
+        run: mkdir -p build
 
       - name: Build
-        run: cmake --build build --config Release
+        run: cmake ..
+        working-directory: ./build
 
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: build
+          path: build/FinallyScrambledBrains
